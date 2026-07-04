@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Inputs from "./Inputs";
 import Preview from "./Preview";
+import '../styles/Profile.css'
 
 export default function Profile() {
   const [step, setStep] = useState(1);
@@ -51,12 +52,50 @@ export default function Profile() {
   };
 
   return (
-    <div>
-      <div>
+    <div className="profile">
+      <div className="profile__panel">
+        <ol className="profile__steps">
+          <li
+            className={
+              "profile__step-item" +
+              (step === 1 ? " is-active" : step > 1 ? " is-done" : "")
+            }
+          >
+            <span className="profile__step-index">01</span>
+            <span className="profile__step-label">General</span>
+          </li>
+          <li
+            className={
+              "profile__step-item" +
+              (step === 2 ? " is-active" : step > 2 ? " is-done" : "")
+            }
+          >
+            <span className="profile__step-index">02</span>
+            <span className="profile__step-label">Education</span>
+          </li>
+          <li
+            className={
+              "profile__step-item" +
+              (step === 3 ? " is-active" : step > 3 ? " is-done" : "")
+            }
+          >
+            <span className="profile__step-index">03</span>
+            <span className="profile__step-label">Experience</span>
+          </li>
+          <li
+            className={
+              "profile__step-item" + (step === 4 ? " is-active" : "")
+            }
+          >
+            <span className="profile__step-index">04</span>
+            <span className="profile__step-label">Preview</span>
+          </li>
+        </ol>
+ 
         {step === 1 && (
-          <>
-            <h2>General Information</h2>
-            <form type="submit">
+          <div className="profile__step">
+            <h2 className="profile__title">General Information</h2>
+            <form>
               <Inputs
                 label="Name"
                 name="name"
@@ -85,13 +124,18 @@ export default function Profile() {
                 value={formData.contactNo}
                 onChange={handleChange}
               />
-              <button onClick={handleNext}>Next</button>
+              <div className="profile__actions profile__actions--end">
+                <button className="btn btn--primary" onClick={handleNext}>
+                  Next
+                </button>
+              </div>
             </form>
-          </>
+          </div>
         )}
+ 
         {step === 2 && (
-          <>
-            <h1>Educational Experience</h1>
+          <div className="profile__step">
+            <h2 className="profile__title">Educational Experience</h2>
             <Inputs
               label="School Name"
               name="schoolName"
@@ -120,14 +164,20 @@ export default function Profile() {
               value={formData.dateStudy}
               onChange={handleChange}
             />
-            <button onClick={handlePrevious}>Back</button>
-            <button onClick={handleNext}>Next</button>
-          </>
+            <div className="profile__actions">
+              <button className="btn btn--ghost" onClick={handlePrevious}>
+                Back
+              </button>
+              <button className="btn btn--primary" onClick={handleNext}>
+                Next
+              </button>
+            </div>
+          </div>
         )}
-
+ 
         {step === 3 && (
-          <>
-            <h1>Practical Experience</h1>
+          <div className="profile__step">
+            <h2 className="profile__title">Practical Experience</h2>
             <Inputs
               label="Company Name"
               name="companyName"
@@ -163,15 +213,20 @@ export default function Profile() {
               value={formData.leavingDate}
               onChange={handleChange}
             />
-
-            <button onClick={handlePrevious}>Back</button>
-            <button onClick={handleSubmit}>Preview</button>
-          </>
+            <div className="profile__actions">
+              <button className="btn btn--ghost" onClick={handlePrevious}>
+                Back
+              </button>
+              <button className="btn btn--primary" onClick={handleSubmit}>
+                Preview
+              </button>
+            </div>
+          </div>
         )}
-
+ 
         {step === 4 && isSubmitted && (
-          <>
-            <h1>Preview</h1>
+          <div className="profile__step">
+            <h2 className="profile__title">Preview</h2>
             <Preview
               name={formData.name}
               city={formData.city}
@@ -187,9 +242,12 @@ export default function Profile() {
               joiningDate={formData.joiningDate}
               leavingDate={formData.leavingDate}
             />
-            <button onClick={handlePrevious}>Back</button>
-            {/* <button onClick={handleSubmit}></button> */}
-          </>
+            <div className="profile__actions profile__actions--end">
+              <button className="btn btn--ghost" onClick={handlePrevious}>
+                Back
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>
