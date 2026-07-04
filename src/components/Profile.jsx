@@ -1,68 +1,194 @@
 import { useState } from "react";
 import Inputs from "./Inputs";
-
+import Preview from "./Preview";
 
 export default function Profile() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contactNo, setContactNo] = useState("");
-  const [city, setCity] = useState("");
+  const [step, setStep] = useState(1);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    contactNo: "",
+    city: "",
+    schoolName: "",
+    titleStudy: "",
+    studyGrade: "",
+    dateStudy: "",
+    companyName: "",
+    positionTitle: "",
+    jobResponsiblities: "",
+    joiningDate: "",
+    leavingDate: "",
+  });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleMailChange = (event) => {
-    setEmail(event.target.value);
+  const goNext = () => setStep(step + 1);
+  const goBack = () => setStep(step - 1);
+
+  const handleNext = (event) => {
+    event.preventDefault();
+    goNext();
   };
 
-  const handleContactChange = (event) => {
-    setContactNo(event.target.value);
-  };
-
-  const handleCityChange = (event) => {
-    setCity(event.target.value);
+  const handlePrevious = (event) => {
+    event.preventDefault();
+    goBack();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    goNext();
     setIsSubmitted(true);
   };
+
   return (
     <div>
       <div>
-        {!isSubmitted ? (
+        {step === 1 && (
           <>
             <h2>General Information</h2>
-            <form>
-              <Inputs label="Name" type="text" onChange={handleNameChange} />
-              <Inputs label="City" type="text" onChange={handleCityChange} />
-              <Inputs label="E-Mail" type="email" onChange={handleMailChange} />
+            <form type="submit">
+              <Inputs
+                label="Name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              <Inputs
+                label="City"
+                name="city"
+                type="text"
+                value={formData.city}
+                onChange={handleChange}
+              />
+              <Inputs
+                label="E-Mail"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
               <Inputs
                 label="Contact No."
+                name="contactNo"
                 type="text"
-                onChange={handleContactChange}
+                value={formData.contactNo}
+                onChange={handleChange}
               />
-              <button onClick={handleSubmit}>
-                Submit
-              </button>
+              <button onClick={handleNext}>Next</button>
             </form>
           </>
-        ) : (
+        )}
+        {step === 2 && (
           <>
-            <div>
-                <div>
-                    <h1>{name || "Your Name"}</h1>
-                    <div> 
-                        {city && <span>{city}</span>}
-                        {email && <span > {email}</span>}
-                        {contactNo && <span > {contactNo}</span>}
-                    </div>
-                </div>
-            </div>
-            <button onClick={() => setIsSubmitted(false)}>Edit </button>
+            <h1>Educational Experience</h1>
+            <Inputs
+              label="School Name"
+              name="schoolName"
+              type="text"
+              value={formData.schoolName}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="Degree Name"
+              name="titleStudy"
+              type="text"
+              value={formData.titleStudy}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="GPA"
+              name="studyGrade"
+              type="text"
+              value={formData.studyGrade}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="Batch Year"
+              name="dateStudy"
+              type="date"
+              value={formData.dateStudy}
+              onChange={handleChange}
+            />
+            <button onClick={handlePrevious}>Back</button>
+            <button onClick={handleNext}>Next</button>
+          </>
+        )}
+
+        {step === 3 && (
+          <>
+            <h1>Practical Experience</h1>
+            <Inputs
+              label="Company Name"
+              name="companyName"
+              type="text"
+              value={formData.companyName}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="Position Title"
+              name="positionTitle"
+              type="text"
+              value={formData.positionTitle}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="Job Responsiblities"
+              name="jobResponsiblities"
+              type="textArea"
+              value={formData.jobResponsiblities}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="Joining Date"
+              name="joiningDate"
+              type="date"
+              value={formData.joiningDate}
+              onChange={handleChange}
+            />
+            <Inputs
+              label="Resigning Date"
+              name="leavingDate"
+              type="date"
+              value={formData.leavingDate}
+              onChange={handleChange}
+            />
+
+            <button onClick={handlePrevious}>Back</button>
+            <button onClick={handleSubmit}>Preview</button>
+          </>
+        )}
+
+        {step === 4 && isSubmitted && (
+          <>
+            <h1>Preview</h1>
+            <Preview
+              name={formData.name}
+              city={formData.city}
+              email={formData.email}
+              contactNo={formData.contactNo}
+              schoolName={formData.schoolName}
+              titleStudy={formData.titleStudy}
+              studyGrade={formData.studyGrade}
+              dateStudy={formData.dateStudy}
+              companyName={formData.companyName}
+              positionTitle={formData.positionTitle}
+              jobResponsiblities={formData.jobResponsiblities}
+              joiningDate={formData.joiningDate}
+              leavingDate={formData.leavingDate}
+            />
+            <button onClick={handlePrevious}>Back</button>
+            {/* <button onClick={handleSubmit}></button> */}
           </>
         )}
       </div>
